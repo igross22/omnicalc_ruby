@@ -102,31 +102,25 @@ class CalculationsController < ApplicationController
 
     @mean = mean(@numbers)
 
-    #def variance(array)
-     #@numbers.each do |number|
-       #mean = @numbers.inject(:+).to_i/@numbers.count.to_i)
-       #difference = number.to_i-mean.to_i
-       #difference.to_i * difference.to_i
-       #not finished
-     #end
+    @variance = @numbers.inject(0){|sum,x| sum+(x-@mean)**2}/@numbers.count
 
+        # VARIANCE
+    # ========
+    # To find the variance of a set,
+    #  - we find the mean of the set
+    #  - for each number in the set,
+    #   - we find the difference between the number and the mean
+    #   - we square the difference
+    #  - the variance is the mean of the squared differences
 
+    @standard_deviation = Math.sqrt(@variance)
 
+    def mode(array)
+      freq = @numbers.inject(Hash.new(0)) { |h,v| h[v] += 1; h }
+      @numbers.max_by { |v| freq[v] }
+    end
 
-    @variance = "enter"
-
-    # VARIANCE
-# ========
-# To find the variance of a set,
-#  - we find the mean of the set
-#  - for each number in the set,
-#   - we find the difference between the number and the mean
-#   - we square the difference
-#  - the variance is the mean of the squared differences
-
-    @standard_deviation = "Replace this string with your answer."
-
-    @mode = "Replace this string with your answer."
+    @mode = mode(@numbers)
 
   end
 end
