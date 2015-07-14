@@ -11,13 +11,15 @@ class CalculationsController < ApplicationController
     # ================================================================================
 
 
-    @character_count_with_spaces = "Replace this string with your answer."
+    @character_count_with_spaces = @text.length
 
-    @character_count_without_spaces = "Replace this string with your answer."
+    @character_count_without_spaces = @text.gsub(" ","").length
 
-    @word_count = "Replace this string with your answer."
+    @word_count = @text.split.count
 
-    @occurrences = "Replace this string with your answer."
+    @occurrences = @text.downcase.split.count(@special_word)
+
+
   end
 
   def loan_payment
@@ -31,8 +33,15 @@ class CalculationsController < ApplicationController
     # The number of years the user input is in the integer @years.
     # The principal value the user input is in the decimal @principal.
     # ================================================================================
+    #P = L[c(1 + c)^n]/[(1 + c)^n - 1]
+    # P = payment
+    # L = loan (principal)
+    # C = interest (apr)
+    # N = years (years)
 
-    @monthly_payment = "Replace this string with your answer."
+
+    @monthly_payment = (@apr / 1200 * @principal)/(1 - (1 + @apr / 1200)**-(@years * 12))
+
   end
 
   def time_between
@@ -48,12 +57,15 @@ class CalculationsController < ApplicationController
     #   number of seconds as a result.
     # ================================================================================
 
-    @seconds = "Replace this string with your answer."
-    @minutes = "Replace this string with your answer."
-    @hours = "Replace this string with your answer."
-    @days = "Replace this string with your answer."
-    @weeks = "Replace this string with your answer."
-    @years = "Replace this string with your answer."
+    @seconds =  @ending - @starting
+
+    #use the approach from Your age in seconds
+
+    @minutes = (@seconds)/60
+    @hours = @minutes/60
+    @days = @hours/24
+    @weeks = @days/7
+    @years = @weeks/52
   end
 
   def descriptive_statistics
@@ -64,26 +76,57 @@ class CalculationsController < ApplicationController
     # The numbers the user input are in the array @numbers.
     # ================================================================================
 
-    @sorted_numbers = "Replace this string with your answer."
+    @sorted_numbers = @numbers.sort
 
-    @count = "Replace this string with your answer."
+    @count = @numbers.count
 
-    @minimum = "Replace this string with your answer."
+    @minimum = @numbers.min
 
-    @maximum = "Replace this string with your answer."
+    @maximum = @numbers.max
 
-    @range = "Replace this string with your answer."
+    @range = @numbers.max.to_i - @numbers.min.to_i
 
-    @median = "Replace this string with your answer."
+        def median(array)
+          sorted = array.sort
+          len = sorted.length
+          return (sorted[(len - 1) / 2] + sorted[len / 2]) / 2.0
+        end
 
-    @sum = "Replace this string with your answer."
+    @median = median(@numbers)
 
-    @mean = "Replace this string with your answer."
+    @sum = @numbers.inject(:+)
 
-    @variance = "Replace this string with your answer."
+        def mean(array)
+            @numbers.inject(:+).to_f/@numbers.count.to_f
+        end
+
+    @mean = mean(@numbers)
+
+    #def variance(array)
+     #@numbers.each do |number|
+       #mean = @numbers.inject(:+).to_i/@numbers.count.to_i)
+       #difference = number.to_i-mean.to_i
+       #difference.to_i * difference.to_i
+       #not finished
+     #end
+
+
+
+
+    @variance = "enter"
+
+    # VARIANCE
+# ========
+# To find the variance of a set,
+#  - we find the mean of the set
+#  - for each number in the set,
+#   - we find the difference between the number and the mean
+#   - we square the difference
+#  - the variance is the mean of the squared differences
 
     @standard_deviation = "Replace this string with your answer."
 
     @mode = "Replace this string with your answer."
+
   end
 end
